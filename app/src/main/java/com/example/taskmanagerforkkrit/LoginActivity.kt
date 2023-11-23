@@ -45,11 +45,17 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
 
-                        // Вход успешен
-                        Toast.makeText(this, "Вход успешен", Toast.LENGTH_SHORT).show()
-
                         getUserRole(user) { role ->
-                            handleUserRole(role)
+                            if (role == "Руководитель") {
+                                // Переходим на AdminActivity, так как пользователь - руководитель
+                                val intent = Intent(this, RukovoditelActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                // Вход успешен, но пользователь не является руководителем
+                                Toast.makeText(this, "Вход успешен", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
                         }
 
                     } else {
@@ -69,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
         val userRef = database.getReference("users").child(uid ?: "")
         userRef.child("role").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val role = dataSnapshot.value.toString()
+                val role = dataSnapshot.value?.toString() ?: ""
                 onComplete(role)
             }
 
@@ -78,13 +84,5 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
-
-    private fun handleUserRole(role: String) {
-        if (role == "Руководитель") {
-            Toast.makeText(this, "Вы руководитель", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Вы сотрудник", Toast.LENGTH_SHORT).show()
-        }
-        finish()
-    }
 }
+
