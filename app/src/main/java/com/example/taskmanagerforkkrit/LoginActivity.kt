@@ -52,8 +52,8 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
                             } else {
-                                // Вход успешен, но пользователь не является руководителем
-                                Toast.makeText(this, "Вход успешен", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, UserActivity::class.java)
+                                startActivity(intent)
                                 finish()
                             }
                         }

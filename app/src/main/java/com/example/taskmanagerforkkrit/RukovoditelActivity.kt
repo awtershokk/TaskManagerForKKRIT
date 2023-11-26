@@ -126,9 +126,10 @@ class RukovoditelActivity : AppCompatActivity() {
         val task = HashMap<String, Any>()
         task["taskName"] = taskName
         task["assignedTo"] = assignedTo
-        task["date"] = date
+        task["deadline"] = date
         task["time"] = time
         task["createdBy"] = createdBy
+        task["status"] = "created"
 
         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
         task["creationDate"] = currentDate
